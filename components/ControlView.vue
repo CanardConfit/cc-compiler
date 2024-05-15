@@ -13,12 +13,6 @@
          Convert
         </button>
 
-        <select class="custom-select mr-5 mb-1" @change="emit('programLoad', $event)">
-         <option value="-">--</option>
-         <option value="0">Fibonacci Suite</option>
-         <option value="1">Test if</option>
-        </select>
-
         <button class="btn btn-secondary mr-1 mb-1" @click="triggerFileUpload">
           Import a .cc
         </button>

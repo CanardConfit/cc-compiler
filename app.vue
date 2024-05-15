@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import {type CCLine, compile_cc} from "~/utils/compiler";
-import programs from "~/utils/programs";
 
 const defaultValue = ref("");
 const editorCode = ref(defaultValue);
@@ -71,6 +70,6 @@ function saveCC() {
 }
 
 function programLoad(event: any) {
-  editorCode.value = programs.programs[event.target.value];
+  //editorCode.value = programs.programs[event.target.value];
 }
 </script>

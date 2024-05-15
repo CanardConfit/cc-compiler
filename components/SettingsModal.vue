@@ -12,11 +12,31 @@
           <form>
             <div class="form-group">
               <label for="compilerVersion">Version du compilateur</label>
-              <input type="text" class="form-control" id="compilerVersion" v-model="compilerVersion">
+              <select class="form-control" id="compilerVersion" v-model="compilerVersion">
+                <option :value="version" v-for="version in CompilerVersion" :key="version">
+                  {{ version }}
+                </option>
+              </select>
             </div>
             <div class="form-group">
-              <label for="includeInterruptZone">Inclusion d'une zone d'interruption</label>
-              <input type="checkbox" class="form-control" id="includeInterruptZone" v-model="includeInterruptZone">
+              <label for="loadProgram">Charger un programme</label>
+              <select class="form-control" id="loadProgram" v-model="loadProgram">
+                <option :value="program.id" v-for="program in programs" :key="program.id">
+                  {{ program.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="interruptEnable" v-model="interruptEnable">
+              <label class="form-check-label" for="interruptEnable">Activer l'interruption</label>
+            </div>
+            <div class="form-group">
+              <label for="interruptPadding">Padding d'interruption</label>
+              <input type="number" class="form-control" id="interruptPadding" v-model="interruptPadding">
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="only8variables" v-model="only8variables">
+              <label class="form-check-label" for="only8variables">Seulement 8 variables</label>
             </div>
           </form>
         </div>
@@ -30,8 +50,6 @@
 </template>
 
 <script setup lang="ts">
-import type {CCOptions} from "~/utils/objects";
-
 const emit = defineEmits(["update:show", "update:options"]);
 defineProps(["show"]);
 
