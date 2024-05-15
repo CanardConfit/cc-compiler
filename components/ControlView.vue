@@ -5,19 +5,24 @@
       <div class="navbar-brand">
         <span class="navbar-brand mb-0 h1">CC Compiler</span>
 
-        <button class="btn btn-secondary mr-1 mb-1" @click="emit('convert')">
+        <button class="btn btn-secondary mr-1 mb-1" @click="emit('options')">
+         Options
+        </button>
+
+        <button class="btn btn-secondary mr-5 mb-1" @click="emit('convert')">
          Convert
         </button>
 
-        <select class="custom-select mr-1 mb-1" @change="emit('programLoad', $event)">
+        <select class="custom-select mr-5 mb-1" @change="emit('programLoad', $event)">
          <option value="-">--</option>
          <option value="0">Fibonacci Suite</option>
          <option value="1">Test if</option>
         </select>
 
-        <button class="btn btn-secondary mr-1 mb-1" @click="emit('importCC')">
+        <button class="btn btn-secondary mr-1 mb-1" @click="triggerFileUpload">
           Import a .cc
         </button>
+        <input type="file" ref="fileInput" class="d-none" @change="handleFileUpload" accept=".cc"/>
 
         <button class="btn btn-secondary mr-1 mb-1" @click="emit('saveCC')">
           Save as .cc
@@ -32,7 +37,23 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["changeCompiler", "convert", "importCC", "saveCC", "exportCirc", "programLoad"]);
+const fileInput = ref<HTMLInputElement|null>(null);
+const emit = defineEmits(["changeCompiler", "convert", "importCC", "saveCC", "exportCirc", "programLoad", "options"]);
+
+function triggerFileUpload() {
+  fileInput.value?.click();
+}
+
+function handleFileUpload(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      emit('importCC', e.target.result);
+    };
+    reader.readAsText(file);
+  }
+}
 </script>
 
 <style scoped>
