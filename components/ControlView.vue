@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-xl fixed-top navbar-dark bg-dark form-inline">
 
       <div class="navbar-brand">
-        <span class="navbar-brand mb-0 h1">CC Compiler</span>
+        <span class="navbar-brand mb-0 h1"><img src="/favicon.ico" alt="favicon" style="height: 30px;" class="mr-1" /> CC Compiler</span>
 
         <button class="btn btn-secondary mr-1 mb-1" @click="emit('options')">
          Options
@@ -25,10 +25,6 @@
         <button class="btn btn-secondary mr-5 mb-1" @click="emit('exportCirc')">
           Export to .circ
         </button>
-
-        <button class="btn btn-secondary mr-1 mb-1" @click="emit('help')">
-          Help
-        </button>
       </div>
     </nav>
   </header>
@@ -36,7 +32,7 @@
 
 <script setup lang="ts">
 const fileInput = ref<HTMLInputElement|null>(null);
-const emit = defineEmits(["changeCompiler", "convert", "importCC", "saveCC", "exportCirc", "programLoad", "options", "help"]);
+const emit = defineEmits(["convert", "importCC", "saveCC", "exportCirc", "options"]);
 
 function triggerFileUpload() {
   fileInput.value?.click();

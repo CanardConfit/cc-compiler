@@ -47,24 +47,33 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["update:show", "update:options"]);
-defineProps(["show"]);
+import type {CCOptions} from "~/utils/objects";
 
-const compilerVersion = ref(CompilerVersion.V1);
-const interruptEnable = ref(false);
-const interruptPadding = ref(0);
-const loadProgram = ref(-1);
+const emit = defineEmits(["update:show", "update:options"]);
+const props = defineProps(["show", "options"]);
+
+const compilerVersion = ref(props.options.compilerVersion);
+const interruptEnable = ref(props.options.interruptEnable);
+const interruptPadding = ref(props.options.interruptPadding);
+const loadProgram = ref(props.options.loadProgram);
+
+watch(() => props.options, (newOptions) => {
+  compilerVersion.value = newOptions.compilerVersion
+  interruptEnable.value = newOptions.interruptEnable
+  interruptPadding.value = newOptions.interruptPadding
+  loadProgram.value = newOptions.loadProgram
+}, { deep: true });
 
 function closeModal() {
   emit("update:show", false);
 }
 function saveSettings() {
   emit("update:options", {
-    compilerVersion: compilerVersion,
-    interruptEnable: interruptEnable,
-    interruptPadding: interruptPadding,
-    loadProgram: loadProgram,
-  } as unknown as CCOptions);
+    compilerVersion: compilerVersion.value,
+    interruptEnable: interruptEnable.value,
+    interruptPadding: interruptPadding.value,
+    loadProgram: loadProgram.value,
+  } as CCOptions);
 
   closeModal();
 }

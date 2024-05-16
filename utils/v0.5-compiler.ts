@@ -1,3 +1,5 @@
+import {Tree, CCLine, CCLineAsm, TreeType} from "~/utils/objects";
+
 function print_tree(tree: Tree, depth=0) {
     if (!tree) {
         return;
@@ -11,28 +13,6 @@ function print_tree(tree: Tree, depth=0) {
     }
     if (tree.next) {
         print_tree(tree.next, depth);
-    }
-}
-
-enum TreeType {
-    Entry, Assignation, While, If, Add, Sub, DecG, DecD, DecA, AND, OR, NOT, Start_While, End_While, More
-}
-
-class Tree {
-    public type;
-    public next: Tree | null;
-    public line: string;
-    public weight;
-    public fields: unknown[];
-    public sub: Tree | null;
-
-    constructor(line: string, tree_type: TreeType, fields: unknown[] = [], weight = 1) {
-        this.type = tree_type;
-        this.next = null;
-        this.sub = null;
-        this.weight = weight;
-        this.line = line;
-        this.fields = fields ?? [];
     }
 }
 
@@ -263,35 +243,7 @@ function revert_conditions(tree: Tree) {
     }
 }
 
-export class CCLineAsm {
-    public key: string;
-    public value: string;
-
-    constructor(key: string, value: string) {
-        this.key = key;
-        this.value = value;
-    }
-}
-
-export class CCLine {
-    public type: TreeType;
-    public line: string;
-    public opcode: string;
-    public fields: CCLineAsm[];
-    public weight: number;
-    public asm: number;
-
-    constructor(type: TreeType, line: string, opcode: string, fields: CCLineAsm[], weight: number, asm: number) {
-        this.type = type;
-        this.line = line;
-        this.opcode = opcode;
-        this.fields = fields;
-        this.weight = weight;
-        this.asm = asm;
-    }
-}
-
-export function compile_cc(lines: string[], debug: boolean = false): CCLine[] {
+export function v05_compile_cc(lines: string[], debug: boolean = false): CCLine[] {
     let tree = new Tree("", TreeType.Entry);
     let current: Tree = tree;
 
