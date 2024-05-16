@@ -6,7 +6,7 @@
 
 ## Description
 
-The cc-compiler project is developed as part of an exercise at HEPIA in Geneva, where students are tasked with creating their own processor using Logisim. This project aims to provide a Node.js-based compiler that can translate high-level language instructions into machine code compatible with the custom processor designed in Logisim.
+The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva](https://www.hesge.ch/hepia/), where students are tasked with creating their own processor using [Logisim](https://github.com/logisim-evolution/logisim-evolution). This project aims to provide a Node.js-based compiler that can translate high-level language instructions into machine code compatible with the custom processor designed in Logisim.
 
 ## Assembler instructions
 
