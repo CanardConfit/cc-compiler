@@ -22,8 +22,12 @@
           Save as .cc
         </button>
 
-        <button class="btn btn-secondary mr-1 mb-1" @click="emit('exportCirc')">
+        <button class="btn btn-secondary mr-5 mb-1" @click="emit('exportCirc')">
           Export to .circ
+        </button>
+
+        <button class="btn btn-secondary mr-1 mb-1" @click="emit('help')">
+          Help
         </button>
       </div>
     </nav>
@@ -32,7 +36,7 @@
 
 <script setup lang="ts">
 const fileInput = ref<HTMLInputElement|null>(null);
-const emit = defineEmits(["changeCompiler", "convert", "importCC", "saveCC", "exportCirc", "programLoad", "options"]);
+const emit = defineEmits(["changeCompiler", "convert", "importCC", "saveCC", "exportCirc", "programLoad", "options", "help"]);
 
 function triggerFileUpload() {
   fileInput.value?.click();

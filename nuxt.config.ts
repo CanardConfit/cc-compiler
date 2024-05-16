@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: {enabled: true},
   app: {
     head: {
       meta: [
@@ -9,6 +9,9 @@ export default defineNuxtConfig({
       ],
     }
   },
-  css: ["bootstrap/dist/css/bootstrap.min.css", "@/assets/style.css"],
+  css: [
+    "bootstrap/dist/css/bootstrap.min.css",
+    "@/assets/style.css",
+  ],
   modules: ["nuxt-monaco-editor"],
-})
+});

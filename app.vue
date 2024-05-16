@@ -1,5 +1,5 @@
 <template>
-  <ControlView @changeCompiler="" @options="showModal = true" @convert="convert()" @exportCirc="exportCirc()" @programLoad="programLoad($event)" @importCC="importCC($event)" @saveCC="saveCC()" />
+  <ControlView @changeCompiler="" @options="showModal = true" @help="showHelpModal = true" @convert="convert()" @exportCirc="exportCirc()" @programLoad="programLoad($event)" @importCC="importCC($event)" @saveCC="saveCC()" />
   <main role="main" class="container-fluid">
     <div class="row">
       <div class="col-xl-6 col-lg-7 col-md-12">
@@ -11,6 +11,7 @@
     </div>
   </main>
   <SettingsModal :show="showModal" @update:show="showModal = $event" />
+  <MarkdownModal :show="showHelpModal" @update:show="showHelpModal = $event" />
 </template>
 
 <script setup lang="ts">
@@ -20,6 +21,7 @@ const defaultValue = ref("");
 const editorCode = ref(defaultValue);
 const asm = ref<CCLine[]|null>(null);
 const showModal = ref(false);
+const showHelpModal = ref(false);
 
 let xmlTemplate: string = "";
 

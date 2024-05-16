@@ -1,6 +1,6 @@
 export enum CompilerVersion {
-    V1 = "Version 1",
-    V2 = "Version 2",
+    V05 = "Version 0.5",
+    V1 = "Version 1.0",
 }
 
 export interface CCOptions {
@@ -8,11 +8,10 @@ export interface CCOptions {
     interruptEnable: boolean;
     interruptPadding: number;
     loadProgram: string;
-    only8variables: boolean;
 }
 
 export const programs = [
-        {id: 0, name: "Fibonacci Simple", program: `
+        {id: 0, name: "Fibonacci Simple V0.5", program: `
 R0 = 0
 while true
 {
@@ -26,7 +25,7 @@ while true
     }
 }
 `},
-        {id: 0, name: "If test Simple", program: `
+        {id: 1, name: "If test Simple V0.5", program: `
 R0 = 127
 R1 = 127
 R2 = R1 + R0
