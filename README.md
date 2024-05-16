@@ -1,16 +1,12 @@
 # CC Processor Compiler
 
+![Docker Pulls](https://img.shields.io/docker/pulls/canardconfit/cc-compiler)
+![GitHub Release](https://img.shields.io/github/v/release/CanardConfit/cc-compiler)
+![GitHub Repo stars](https://img.shields.io/github/stars/CanardConfit/cc-compiler)
+
 ## Description
 
-TODO
-
-## Installation
-
-TODO
-
-## Usages
-
-TODO
+The cc-compiler project is developed as part of an exercise at HEPIA in Geneva, where students are tasked with creating their own processor using Logisim. This project aims to provide a Node.js-based compiler that can translate high-level language instructions into machine code compatible with the custom processor designed in Logisim.
 
 ## Assembler instructions
 
