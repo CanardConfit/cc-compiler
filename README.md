@@ -61,6 +61,46 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | LD RD, offset[RP] | 1100          | RD         | RP         | offset              |
 | ST RS, offset[RP] | 1101          | RS         | RP         | offset              |
 
+### Peripheral access table (TODO)
+
+| Description       | Pointer value | Access | Pointer | offset |
+| ----------------- | ------------- | ------ | ------- | ------ |
+| **Leds**          |               |        |         |        |
+| LED0              | 128           | R / W  | 128     | 0      |
+| LED1              | 129           | R / W  | 128     | 1      |
+| LED2              | 130           | R / W  | 128     | 2      |
+| LED3              | 131           | R / W  | 128     | 3      |
+| LED4              | 132           | R / W  | 128     | 4      |
+| LED5              | 133           | R / W  | 128     | 5      |
+| LED6              | 134           | R / W  | 128     | 6      |
+| LED7              | 135           | R / W  | 128     | 7      |
+| **Buttons**       |               |        |         |        |
+| BTN0              | 136           | R      | 136     | 0      |
+| BTN1              | 137           | R      | 136     | 1      |
+| BTN2              | 138           | R      | 136     | 2      |
+| BTN3              | 139           | R      | 136     | 3      |
+| BTN4              | 140           | R      | 136     | 4      |
+| BTN5              | 141           | R      | 136     | 5      |
+| BTN6              | 142           | R      | 136     | 6      |
+| BTN7              | 143           | R      | 136     | 7      |
+| **UART**          |               |        |         |        |
+|                   |               |        |         |        |
+| **PWM**           |               |        |         |        |
+| PWM1              |               |        |         |        |
+| DIR1              |               |        |         |        |
+| PWM2              |               |        |         |        |
+| DIR2              |               |        |         |        |
+| **Front Sensor**  |               |        |         |        |
+| Left              |               |        |         |        |
+| Middle            |               |        |         |        |
+| Right             |               |        |         |        |
+| **Ground Sensor** |               |        |         |        |
+| Left              |               |        |         |        |
+| Right             |               |        |         |        |
+| **Other**         |               |        |         |        |
+|                   |               |        |         |        |
+
+
 ## Examples
 
 ```c
