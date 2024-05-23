@@ -23,7 +23,7 @@ const asm = ref<CCLine[]|null>(null);
 const showModal = ref(false);
 
 const currentOptions = ref<CCOptions>({
-  compilerVersion: CompilerVersion.V05,
+  compilerVersion: CompilerVersion.V1,
   interruptEnable: false,
   interruptPadding: 0,
   loadProgram: -1} as CCOptions);
@@ -41,11 +41,7 @@ function options(opt: CCOptions) {
     opt.loadProgram = -1;
   }
 
-  console.log(opt);
-
   currentOptions.value = opt;
-
-  console.log(currentOptions.value);
 }
 
 function convert() {
@@ -53,6 +49,9 @@ function convert() {
   switch (currentOptions.value.compilerVersion) {
     case CompilerVersion.V05:
       asm.value = v05_compile_cc(editorCode.value.split("\n"), false);
+      break;
+    case CompilerVersion.V1:
+      asm.value = v1_compile_cc(editorCode.value.split("\n"), true);
       break;
   }
 }
