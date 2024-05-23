@@ -1,6 +1,6 @@
 export enum CompilerVersion {
     V05 = "Version 0.5",
-    //V1 = "Version 1.0",
+    V1 = "Version 1.0",
 }
 
 export function getCompilerInfo(version: CompilerVersion) {
@@ -9,7 +9,7 @@ export function getCompilerInfo(version: CompilerVersion) {
 
 export const compilerInfo = [
     {id: CompilerVersion.V05, info: "This compiler only supports 8 variables from the register bank (R0, R1, ...). The ifs and whiles only accept the value of the ALU flags (N, Z, C, V). The interruption routine isn't supported."},
-    //{id: CompilerVersion.V1, info: "tt"}
+    {id: CompilerVersion.V1, info: ""}
 ]
 
 export interface CCOptions {
@@ -44,10 +44,19 @@ if not Z
     R3 = 1
 }
 R1 = 2
+`},
+    {id: 2, name: "V1 - If test Simple", program: `
+R0 = 127
+R1 = 127
+
+if R0 == R1
+{
+    R3 = 1
+}
 `}];
 
 export enum TreeType {
-    Entry, Assignation, While, If, Add, Sub, DecG, DecD, DecA, AND, OR, NOT, Start_While, End_While, More
+    Entry, Assignation, While, If, Add, Sub, DecG, DecD, DecA, AND, OR, NOT, Start_Brace, End_Brace, More
 }
 
 export class Tree {

@@ -19,7 +19,7 @@ function print_tree(tree: Tree, depth=0) {
 const PATTERNS: {regex: RegExp, type: TreeType}[] = [
     {regex: /R([0-7])\s=\s*(\d+)/, type: TreeType.Assignation},
     {regex: /while\s+(not)?\s*([NZCV]|true)/, type: TreeType.While},
-    {regex: /if\s+(not)?\s*([NZCV])/, type: TreeType.If},
+    {regex: /if\s*(R[0-7])\s*([!=><]=?)\s+(R[0-7])/, type: TreeType.If},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.Add},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*-\s*R([0-7])/, type: TreeType.Sub},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*<<\s*(\d+)/, type: TreeType.DecG},
@@ -41,7 +41,7 @@ function get_tree_of_line(line: string) {
             if (type_ == TreeType.While && match[0] == "not") {
                 return new Tree(line, type_, match, 2);
             } else if (type_ == TreeType.If) {
-                return new Tree(line, type_, match, 2);
+                return new Tree(line, type_, match, 3);
             } else {
                 return new Tree(line, type_, match);
             }
@@ -147,9 +147,9 @@ function compute_asm(tree: Tree): CCLineAsm[][] {
             }
         }
     } else if (tree.type == TreeType.If) {
-        let jump = String(tree.fields[2]);
+        let jump = String(tree.fields[4]);
         let jump1 = "2";
-        if (tree.fields[0] == "not") {
+        if (tree.fields[1] == "!=") {
             jump1 = (parseInt(jump) + 1).toString();
             jump = "1";
         }
@@ -243,7 +243,7 @@ function revert_conditions(tree: Tree) {
     }
 }
 
-export function v05_compile_cc(lines: string[], debug: boolean = false): CCLine[] {
+export function v1_compile_cc(lines: string[], debug: boolean = false): CCLine[] {
     let tree = new Tree("", TreeType.Entry);
     let current: Tree = tree;
 
