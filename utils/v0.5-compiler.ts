@@ -19,17 +19,17 @@ function print_tree(tree: Tree, depth=0) {
 const PATTERNS: {regex: RegExp, type: TreeType}[] = [
     {regex: /R([0-7])\s=\s*(\d+)/, type: TreeType.Assignation},
     {regex: /while\s+(not)?\s*([NZCV]|true)/, type: TreeType.While},
-    {regex: /if\s+(not)?\s*([NZCV])/, type: TreeType.If},
-    {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.Add},
-    {regex: /R([0-7])\s*=\s*R([0-7])\s*-\s*R([0-7])/, type: TreeType.Sub},
+    {regex: /if\s+(not)?\s*([NZCV])/, type: TreeType.IF},
+    {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.ADD},
+    {regex: /R([0-7])\s*=\s*R([0-7])\s*-\s*R([0-7])/, type: TreeType.SUB},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*<<\s*(\d+)/, type: TreeType.DecG},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*>>\s*(\d+)/, type: TreeType.DecD},
     {regex: /R([0-7])\s*=\s*ASR\s*R([0-7])/, type: TreeType.DecA},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*and\s*R([0-7])/, type: TreeType.AND},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*or\s*R([0-7])/, type: TreeType.OR},
     {regex: /R([0-7])\s*=\s*not\s*R([0-7])/, type: TreeType.NOT},
-    {regex: /{/, type: TreeType.Start_While},
-    {regex: /}/, type: TreeType.End_While},
+    {regex: /{/, type: TreeType.START_BRACE},
+    {regex: /}/, type: TreeType.END_BRACE},
 ];
 
 function get_tree_of_line(line: string) {
@@ -40,7 +40,7 @@ function get_tree_of_line(line: string) {
             match = match.slice(1, match.length);
             if (type_ == TreeType.While && match[0] == "not") {
                 return new Tree(line, type_, match, 2);
-            } else if (type_ == TreeType.If) {
+            } else if (type_ == TreeType.IF) {
                 return new Tree(line, type_, match, 2);
             } else {
                 return new Tree(line, type_, match);
@@ -51,10 +51,10 @@ function get_tree_of_line(line: string) {
 }
 
 function clean_tree(tree: Tree) {
-    if (tree.sub && tree.sub.type == TreeType.Start_While) {
+    if (tree.sub && tree.sub.type == TreeType.START_BRACE) {
         tree.sub = tree.sub.next;
     }
-    if (tree.next && tree.next.type == TreeType.End_While) {
+    if (tree.next && tree.next.type == TreeType.END_BRACE) {
         tree.next = tree.next.next;
     }
     if (tree.next) {
@@ -146,7 +146,7 @@ function compute_asm(tree: Tree): CCLineAsm[][] {
                     ];
             }
         }
-    } else if (tree.type == TreeType.If) {
+    } else if (tree.type == TreeType.IF) {
         let jump = String(tree.fields[2]);
         let jump1 = "2";
         if (tree.fields[0] == "not") {
@@ -175,9 +175,9 @@ function compute_asm(tree: Tree): CCLineAsm[][] {
                     [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
                 ]
         }
-    } else if (tree.type == TreeType.Add) {
+    } else if (tree.type == TreeType.ADD) {
         return [asm_3fields("0000", tree)];
-    } else if (tree.type == TreeType.Sub) {
+    } else if (tree.type == TreeType.SUB) {
         return [asm_3fields("0001", tree)];
     } else if (tree.type == TreeType.DecG) {
         return [asm_2fields("0010", tree)];
@@ -231,7 +231,7 @@ function revert_conditions(tree: Tree) {
             current.sub = c.sub;
             c.sub = null;
             c.fields.push(get_num_nodes(current.sub) + c.weight - 1);
-        } else if (c.type == TreeType.If) {
+        } else if (c.type == TreeType.IF) {
             c.fields.push(get_num_nodes(c.sub) + c.weight - 1);
         }
 
