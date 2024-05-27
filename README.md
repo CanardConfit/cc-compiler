@@ -65,40 +65,38 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 
 | Description       | Pointer value | Access | Pointer | offset |
 | ----------------- | ------------- | ------ | ------- | ------ |
-| **Leds**          |               |        |         |        |
-| LED0              | 128           | R / W  | 128     | 0      |
-| LED1              | 129           | R / W  | 128     | 1      |
-| LED2              | 130           | R / W  | 128     | 2      |
-| LED3              | 131           | R / W  | 128     | 3      |
-| LED4              | 132           | R / W  | 128     | 4      |
-| LED5              | 133           | R / W  | 128     | 5      |
-| LED6              | 134           | R / W  | 128     | 6      |
-| LED7              | 135           | R / W  | 128     | 7      |
-| **Buttons**       |               |        |         |        |
-| BTN0              | 136           | R      | 136     | 0      |
-| BTN1              | 137           | R      | 136     | 1      |
-| BTN2              | 138           | R      | 136     | 2      |
-| BTN3              | 139           | R      | 136     | 3      |
-| BTN4              | 140           | R      | 136     | 4      |
-| BTN5              | 141           | R      | 136     | 5      |
-| BTN6              | 142           | R      | 136     | 6      |
-| BTN7              | 143           | R      | 136     | 7      |
+| **Leds**          | 128           | R / W  | 128     | 0      |
+| Bit 0 - LED0      |               |        |         |        |
+| Bit 1 - LED1      |               |        |         |        |
+| Bit 2 - LED2      |               |        |         |        |
+| Bit 3 - LED3      |               |        |         |        |
+| Bit 4 - LED4      |               |        |         |        |
+| Bit 5 - LED5      |               |        |         |        |
+| Bit 6 - LED6      |               |        |         |        |
+| Bit 7 - LED7      |               |        |         |        |
+| **Buttons**       | 129           | R      | 129     | 0      |
+| Bit 0 - BTN0      |               |        |         |        |
+| Bit 1 - BTN1      |               |        |         |        |
+| Bit 2 - BTN2      |               |        |         |        |
+| Bit 3 - BTN3      |               |        |         |        |
+| Bit 4 - BTN4      |               |        |         |        |
+| Bit 5 - BTN5      |               |        |         |        |
+| Bit 6 - BTN6      |               |        |         |        |
+| Bit 7 - BTN7      |               |        |         |        |
 | **UART**          |               |        |         |        |
-|                   |               |        |         |        |
+| Receiver          | 130           | R      | 130     | 0      |
 | **PWM**           |               |        |         |        |
-| PWM1              |               |        |         |        |
-| DIR1              |               |        |         |        |
-| PWM2              |               |        |         |        |
-| DIR2              |               |        |         |        |
+| V1                | 131           | W      | 131     | 0      |
+| V2                | 132           | W      | 131     | 1      |
 | **Front Sensor**  |               |        |         |        |
-| Left              |               |        |         |        |
-| Middle            |               |        |         |        |
-| Right             |               |        |         |        |
+| Left              | 133           | R      | 133     | 0      |
+| Middle            | 134           | R      | 133     | 1      |
+| Right             | 135           | R      | 133     | 2      |
 | **Ground Sensor** |               |        |         |        |
-| Left              |               |        |         |        |
-| Right             |               |        |         |        |
+| Left              | 136           | R      | 136     | 0      |
+| Right             | 137           | R      | 137     | 1      |
 | **Other**         |               |        |         |        |
-|                   |               |        |         |        |
+| Valve             | 138           | R / W  | 138     | 0      |
 
 
 ## Examples
