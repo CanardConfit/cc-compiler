@@ -25,6 +25,18 @@
         <button class="btn btn-secondary mr-5 mb-1" @click="emit('exportCirc')">
           Export to .circ
         </button>
+
+        <button class="btn btn-secondary mr-5 mb-1" @click="emit('loadProgram')">
+          Load Example program
+        </button>
+
+        <button class="btn btn-secondary mr-5 mb-1" @click="emit('link')">
+          Share
+        </button>
+
+        <button class="btn btn-secondary mr-5 mb-1" @click="openLink()">
+          Help
+        </button>
       </div>
     </nav>
   </header>
@@ -32,7 +44,11 @@
 
 <script setup lang="ts">
 const fileInput = ref<HTMLInputElement|null>(null);
-const emit = defineEmits(["convert", "importCC", "saveCC", "exportCirc", "options"]);
+const emit = defineEmits(["convert", "importCC", "saveCC", "exportCirc", "options", "link", "loadProgram"]);
+
+function openLink() {
+  window.open("https://github.com/CanardConfit/cc-compiler/blob/master/README.md", "_blank");
+}
 
 function triggerFileUpload() {
   fileInput.value?.click();

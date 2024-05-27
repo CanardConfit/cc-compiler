@@ -19,17 +19,19 @@ function print_tree(tree: Tree, depth=0) {
 const PATTERNS: {regex: RegExp, type: TreeType}[] = [
     {regex: /R([0-7])\s=\s*(\d+)/, type: TreeType.Assignation},
     {regex: /while\s+(not)?\s*([NZCV]|true)/, type: TreeType.While},
-    {regex: /if\s*(R[0-7])\s*([!=><]=?)\s+(R[0-7])/, type: TreeType.If},
-    {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.Add},
-    {regex: /R([0-7])\s*=\s*R([0-7])\s*-\s*R([0-7])/, type: TreeType.Sub},
+    {regex: /if\s*R([0-7])\s*([!=><]=?)\s+R([0-7])/, type: TreeType.IF},
+    {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.ADD},
+    {regex: /R([0-7])\s*=\s*R([0-7])\s*-\s*R([0-7])/, type: TreeType.SUB},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*<<\s*(\d+)/, type: TreeType.DecG},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*>>\s*(\d+)/, type: TreeType.DecD},
     {regex: /R([0-7])\s*=\s*ASR\s*R([0-7])/, type: TreeType.DecA},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*and\s*R([0-7])/, type: TreeType.AND},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*or\s*R([0-7])/, type: TreeType.OR},
     {regex: /R([0-7])\s*=\s*not\s*R([0-7])/, type: TreeType.NOT},
-    {regex: /{/, type: TreeType.Start_Brace},
-    {regex: /}/, type: TreeType.End_Brace},
+    {regex: /STORE\s*R([0-7])\s*R([0-7])\s*(\d*)/, type: TreeType.STORE},
+    {regex: /LOAD\s*R([0-7])\s*R([0-7])\s*(\d*)/, type: TreeType.LOAD},
+    {regex: /^{/, type: TreeType.START_BRACE},
+    {regex: /^}/, type: TreeType.END_BRACE},
 ];
 
 function get_tree_of_line(line: string) {
@@ -40,8 +42,8 @@ function get_tree_of_line(line: string) {
             match = match.slice(1, match.length);
             if (type_ == TreeType.While && match[0] == "not") {
                 return new Tree(line, type_, match, 2);
-            } else if (type_ == TreeType.If) {
-                return new Tree(line, type_, match, 3);
+            } else if (type_ == TreeType.IF) {
+                return new Tree(line, type_, match, 2);
             } else {
                 return new Tree(line, type_, match);
             }
@@ -51,10 +53,10 @@ function get_tree_of_line(line: string) {
 }
 
 function clean_tree(tree: Tree) {
-    if (tree.sub && tree.sub.type == TreeType.Start_Brace) {
+    if (tree.sub && tree.sub.type == TreeType.START_BRACE) {
         tree.sub = tree.sub.next;
     }
-    if (tree.next && tree.next.type == TreeType.End_Brace) {
+    if (tree.next && tree.next.type == TreeType.END_BRACE) {
         tree.next = tree.next.next;
     }
     if (tree.next) {
@@ -80,45 +82,39 @@ function string_to_binary(input_string: string, length=3) {
     }
 }
 
-function binary_to_hexadecimal(binary_string: string) {
-    try {
-        let number = parseInt(binary_string, 2);
-        let hexadecimal_representation = number.toString(16);
-        return hexadecimal_representation.toUpperCase();
-    } catch (e: unknown) {
-        throw Error("Error");
-    }
+function asm_2fields(code: string, tree: Tree): CCLine {
+    return l(tree, [cc("opcode", `${code}`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("source 0", `${string_to_binary(tree.fields[1] as string)}`), cc("x", `00000`)]);
 }
 
-function asm_2fields(code: string, tree: Tree): CCLineAsm[] {
-    return [cc("opcode", `${code}`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("source 0", `${string_to_binary(tree.fields[1] as string)}`), cc("x", `00000`)];
-}
-
-function asm_3fields(code: string, tree: Tree): CCLineAsm[] {
-    return [cc("opcode", `${code}`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("source 0", `${string_to_binary(tree.fields[1] as string)}`), cc("source 1", `${string_to_binary(tree.fields[2] as string)}`), cc("x", `000`)];
+function asm_3fields(code: string, tree: Tree): CCLine {
+    return l(tree, [cc("opcode", `${code}`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("source 0", `${string_to_binary(tree.fields[1] as string)}`), cc("source 1", `${string_to_binary(tree.fields[2] as string)}`), cc("x", `000`)]);
 }
 
 function cc(key: string, field: string) {
     return new CCLineAsm(key, field);
 }
 
-function compute_asm(tree: Tree): CCLineAsm[][] {
+function l(tree: Tree, asm: CCLineAsm[], type: TreeType = tree.type): CCLine {
+    return new CCLine(type, tree.line, tree.line.substring(0, 5), asm, 1, parseInt(asm.map((el) => el.value).join(""), 2));
+}
+
+function compute_asm(tree: Tree): CCLine[] {
     if (tree.type == TreeType.Assignation) {
-        return [[cc("opcode", `1000`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("x", `0`), cc("constant", `${string_to_binary(tree.fields[1] as string, 8)}`)]];
+        return [l(tree, [cc("opcode", `1000`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("x", `0`), cc("constant", `${string_to_binary(tree.fields[1] as string, 8)}`)])];
     } else if (tree.type == TreeType.While) {
         let jump = (-(tree.fields[2] as number)).toString();
         if (tree.fields[0] == null) {
             switch (tree.fields[1]) {
                 case 'true':
-                    return [[cc("opcode", `1011`), cc("x", `0000`), cc("", `${string_to_binary(jump, 8)}`)]];
+                    return [l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)])];
                 case 'Z':
-                    return [[cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump, 8)}`)]];
+                    return [l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump, 8)}`)])];
                 case 'N':
-                    return [[cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary(jump, 8)}`)]];
+                    return [l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary(jump, 8)}`)])];
                 case 'C':
-                    return [[cc("opcode", `1010`), cc("condition", `0010`), cc("jumps", `${string_to_binary(jump, 8)}`)]];
+                    return [l(tree, [cc("opcode", `1010`), cc("condition", `0010`), cc("jumps", `${string_to_binary(jump, 8)}`)])];
                 case 'V':
-                    return [[cc("opcode", `1010`), cc("condition", `0001`), cc("jumps", `${string_to_binary(jump, 8)}`)]];
+                    return [l(tree, [cc("opcode", `1010`), cc("condition", `0001`), cc("jumps", `${string_to_binary(jump, 8)}`)])];
             }
         } else {
             switch (tree.fields[1]) {
@@ -126,58 +122,80 @@ function compute_asm(tree: Tree): CCLineAsm[][] {
                     throw SyntaxError("A while with condition 'true' with a 'not' behind is not possible");
                 case 'Z':
                     return [
-                        [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `00000010`)],
-                        [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
+                        l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `00000010`)]),
+                        l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)])
                     ];
                 case 'N':
                     return [
-                        [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `00000010`)],
-                        [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
+                        l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `00000010`)]),
+                        l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)])
                     ];
                 case 'C':
                     return [
-                        [cc("opcode", `1010`), cc("condition", `0010`), cc("jumps", `00000010`)],
-                        [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
+                        l(tree, [cc("opcode", `1010`), cc("condition", `0010`), cc("jumps", `00000010`)]),
+                        l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)])
                     ];
                 case 'V':
                     return [
-                        [cc("opcode", `1010`), cc("condition", `0001`), cc("jumps", `00000010`)],
-                        [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
+                        l(tree, [cc("opcode", `1010`), cc("condition", `0001`), cc("jumps", `00000010`)]),
+                        l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)])
                     ];
             }
         }
-    } else if (tree.type == TreeType.If) {
-        let jump = String(tree.fields[4]);
-        let jump1 = "2";
-        if (tree.fields[1] == "!=") {
-            jump1 = (parseInt(jump) + 1).toString();
-            jump = "1";
+    } else if (tree.type == TreeType.IF) {
+        let ret: CCLine[] = [];
+        let jump = parseInt(tree.fields[3] as string);
+        let jump1 = 2;
+        let sign = tree.fields[1] as string;
+
+        if (sign.startsWith("<") || sign.startsWith("!")) {
+            jump1 = jump;
+            jump = 1;
         }
-        switch (tree.fields[1]) {
-            case 'Z':
-                return [
-                    [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1, 8)}`)],
-                    [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
-                ]
-            case 'N':
-                return [
-                    [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary(jump1, 8)}`)],
-                    [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
-                ]
-            case 'C':
-                return [
-                    [cc("opcode", `1010`), cc("condition", `0010`), cc("jumps", `${string_to_binary(jump1, 8)}`)],
-                    [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
-                ]
-            case 'V':
-                return [
-                    [cc("opcode", `1010`), cc("condition", `0001`), cc("jumps", `${string_to_binary(jump1, 8)}`)],
-                    [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump, 8)}`)]
-                ]
+
+        let Rs1 = string_to_binary(tree.fields[0] as string, 3);
+        let Rs2 = string_to_binary(tree.fields[2] as string, 3);
+
+        ret.push(l(tree, [cc("opcode", "0001"), cc("source1", Rs2), cc("source 2", Rs1), cc("x", "000")], TreeType.IF_SUB));
+
+        switch (sign) {
+            case '>':
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
+                break;
+            case '<':
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 2).toString(), 8)}`)], TreeType.IF_COND));
+                break;
+            case '=':
+                throw Error("Cannot have = without other = after.");
+            case '!':
+                throw Error("Cannot have ! without = after.");
+            case '==':
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
+                break;
+            case '!=':
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary((jump + 2).toString(), 8)}`)], TreeType.IF_COND));
+                break;
+            case '>=':
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary("3", 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
+                break;
+            case '<=':
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 3).toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
+                jump = jump1
+                break;
         }
-    } else if (tree.type == TreeType.Add) {
+
+        ret.push(l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("jumps", `${string_to_binary(jump.toString(), 8)}`)], TreeType.IF_ELSE));
+
+        return ret;
+    } else if (tree.type == TreeType.STORE) {
+        return [l(tree, [cc("opcode", `1100`), cc("Rs", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
+    } else if (tree.type == TreeType.LOAD) {
+        return [l(tree, [cc("opcode", `1101`), cc("Rd", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
+    } else if (tree.type == TreeType.ADD) {
         return [asm_3fields("0000", tree)];
-    } else if (tree.type == TreeType.Sub) {
+    } else if (tree.type == TreeType.SUB) {
         return [asm_3fields("0001", tree)];
     } else if (tree.type == TreeType.DecG) {
         return [asm_2fields("0010", tree)];
@@ -199,11 +217,9 @@ function compute_asm(tree: Tree): CCLineAsm[][] {
 function tree_to_asm(lst: CCLine[], tree: Tree, debug: boolean = false) {
     let current: Tree|null = tree;
     while (current != null) {
-        let asm = compute_asm(current);
+        let lines = compute_asm(current);
 
-        for (let as of asm) {
-            lst.push(new CCLine(current.type, current.line, current.line.substring(0, 5), as, current.weight, parseInt(as.map((el) => el.value).join(""), 2)));
-        }
+        lst.push(...lines);
 
         if (current.sub) {
             tree_to_asm(lst, current.sub, debug);
@@ -212,7 +228,6 @@ function tree_to_asm(lst: CCLine[], tree: Tree, debug: boolean = false) {
     }
 }
 
-
 function get_num_nodes(tree: Tree|null): number {
     if (tree == null) {
         return 0
@@ -220,7 +235,6 @@ function get_num_nodes(tree: Tree|null): number {
 
     return tree.weight + get_num_nodes(tree.next) + get_num_nodes(tree.sub);
 }
-
 
 function revert_conditions(tree: Tree) {
     let current = tree;
@@ -231,7 +245,7 @@ function revert_conditions(tree: Tree) {
             current.sub = c.sub;
             c.sub = null;
             c.fields.push(get_num_nodes(current.sub) + c.weight - 1);
-        } else if (c.type == TreeType.If) {
+        } else if (c.type == TreeType.IF) {
             c.fields.push(get_num_nodes(c.sub) + c.weight - 1);
         }
 
@@ -249,29 +263,39 @@ export function v1_compile_cc(lines: string[], debug: boolean = false): CCLine[]
 
     let sub_list: Tree[] = [];
 
-    for (const l of lines) {
-        let line = l;
-        if (line.endsWith('\n')) {
-            line = line.slice(0, line.length-2);
-        }
+    for (const [index, l] of lines.entries()) {
+        try {
+            let line = l.trim();
+            if (line.endsWith('\n')) {
+                line = line.slice(0, line.length - 2);
+            }
+            let tmp = get_tree_of_line(line.trim());
 
-        let tmp = get_tree_of_line(line.trim());
+            if (tmp == null) {
+                if (line != "" && line != " " && !line.startsWith("//")) {
+                    throw new Error(`Unresolved line '${line}'.`);
+                }
+                continue;
+            }
 
-        if (tmp == null) {
-            continue;
-        }
+            if (line.includes("{") && tmp.type != TreeType.START_BRACE) {
+                throw new Error(`Braces ('{' or '}') must be on their own line.`);
+            }
 
-        if (line.trim() == "{") {
-            current.sub = tmp;
-            sub_list.push(current);
-        } else {
-            current.next = tmp;
-        }
+            if (line == "{") {
+                current.sub = tmp;
+                sub_list.push(current);
+            } else {
+                current.next = tmp;
+            }
 
-        if (line.trim() == "}") {
-            current = sub_list.pop()!;
-        } else {
-            current = tmp;
+            if (line == "}") {
+                current = sub_list.pop()!;
+            } else {
+                current = tmp;
+            }
+        } catch (error: any) {
+            throw new Error(error.message + ` At line ${index + 1}.`);
         }
     }
     clean_tree(tree);
