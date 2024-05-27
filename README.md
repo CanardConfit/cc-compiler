@@ -84,19 +84,21 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | Bit 6 - BTN6      |               |        |         |        |
 | Bit 7 - BTN7      |               |        |         |        |
 | **UART**          |               |        |         |        |
-| Receiver          | 130           | R      | 130     | 0      |
+| Address           | 130           | R      | 130     | 0      |
+| DataH             | 131           | R      | 130     | 1      |
+| DataL             | 132           | R      | 130     | 2      |
 | **PWM**           |               |        |         |        |
-| V1                | 131           | W      | 131     | 0      |
-| V2                | 132           | W      | 131     | 1      |
+| V1                | 133           | W      | 133     | 0      |
+| V2                | 134           | W      | 133     | 1      |
 | **Front Sensor**  |               |        |         |        |
-| Left              | 133           | R      | 133     | 0      |
-| Middle            | 134           | R      | 133     | 1      |
-| Right             | 135           | R      | 133     | 2      |
+| Left              | 135           | R      | 135     | 0      |
+| Middle            | 136           | R      | 135     | 1      |
+| Right             | 137           | R      | 135     | 2      |
 | **Ground Sensor** |               |        |         |        |
-| Left              | 136           | R      | 136     | 0      |
-| Right             | 137           | R      | 137     | 1      |
+| Left              | 138           | R      | 138     | 0      |
+| Right             | 139           | R      | 138     | 1      |
 | **Other**         |               |        |         |        |
-| Valve             | 138           | R / W  | 138     | 0      |
+| Valve             | 140           | W      | 140     | 0      |
 
 
 ## Examples
