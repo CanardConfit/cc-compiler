@@ -190,9 +190,9 @@ function compute_asm(tree: Tree): CCLine[] {
 
         return ret;
     } else if (tree.type == TreeType.STORE) {
-        return [l(tree, [cc("opcode", `1100`), cc("Rs", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
+        return [l(tree, [cc("opcode", `1101`), cc("Rs", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
     } else if (tree.type == TreeType.LOAD) {
-        return [l(tree, [cc("opcode", `1101`), cc("Rd", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
+        return [l(tree, [cc("opcode", `1100`), cc("Rd", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
     } else if (tree.type == TreeType.ADD) {
         return [asm_3fields("0000", tree)];
     } else if (tree.type == TreeType.SUB) {
