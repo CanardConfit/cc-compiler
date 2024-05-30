@@ -18,6 +18,9 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | `R[0-7] = R[0-7] >> R[0-7]`  |                                        | `R0 = R1 >> R2`  | Shift right                                                                       |
 | `R[0-7] = R[0-7] << R[0-7]`  |                                        | `R0 = R1 << R2`  | Shift left                                                                        |
 | `R[0-7] = R[0-7] ASR R[0-7]` |                                        | `R0 = R1 ASR R2` | ASR shift                                                                         |
+| `R[0-7] = R[0-7] and R[0-7]` |                                        | `R0 = R1 and R2` | And operation                                                                     |
+| `R[0-7] = R[0-7] or R[0-7]`  |                                        | `R0 = R1 or R2`  | Or operation                                                                      |
+| `R[0-7] = not R[0-7]`        |                                        | `R0 = not R1`    | Not operation                                                                     |
 | `while x y`                  | x = (`not`)<br/> y = `N,Z,C,V`, `True` | `while True`     | While                                                                             |
 | `if R[0-7] x R[0-7]`         | x = `==, !=, <=, >=, <, >`             | `if R0 == R1`    | If                                                                                |
 | `{`                          |                                        | `                | Brace to start if or while block                                                  |
