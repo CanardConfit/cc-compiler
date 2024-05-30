@@ -156,7 +156,7 @@ function compute_asm(tree: Tree): CCLine[] {
         let Rs1 = string_to_binary(tree.fields[0] as string, 3);
         let Rs2 = string_to_binary(tree.fields[2] as string, 3);
 
-        ret.push(l(tree, [cc("opcode", "0001"), cc("source1", Rs2), cc("source 2", Rs1), cc("x", "000")], TreeType.IF_SUB));
+        ret.push(l(tree, [cc("opcode", "0001"), cc("result", "000"), cc("source1", Rs2), cc("source 2", Rs1), cc("x", "000")], TreeType.IF_SUB));
 
         switch (sign) {
             case '>':
