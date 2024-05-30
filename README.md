@@ -24,13 +24,6 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | `}`                          |                                        | `                | Brace to end if or while block                                                    |
 | `STORE R[0-7] R[0-7] x`      | x = offset int                         | `STORE R0 R1 0`  | Store from value into R[0-7] to RAM or peripheral (R[0-7] value pointer + offset) |
 | `LOAD R[0-7] R[0-7] x`       | x = offset int                         | `LOAD R1 R2 0`   | Store from RAM or peripheral (R[0-7] value pointer + offset) to R[0-7] variable   |
-| ``                           |                                        |                  |                                                                                   |
-| ``                           |                                        |                  |                                                                                   |
-| ``                           |                                        |                  |                                                                                   |
-| ``                           |                                        |                  |                                                                                   |
-| ``                           |                                        |                  |                                                                                   |
-| ``                           |                                        |                  |                                                                                   |
-| ``                           |                                        |                  |                                                                                   |
 
 
 ## Assembler instructions
@@ -160,25 +153,49 @@ Compiled to:
 Another example:
 
 ```c
-R0 = 127
+// -----
+// Test whether the value of a peripheral variable is 30
+// -----
 R1 = 127
-R2 = R1 + R0
 
-if not Z
+// Load data from R1 pointer with offset 5 into R2 var
+LOAD R2 R1 5
+
+// Test variable
+R3 = 30
+
+if R2 == R3
 {
-    R3 = 1
+    R4 = 1
 }
-R1 = 2
+// Else
+if R2 != R3
+{
+    R4 = 0
+}
+
+// Reassign pointer to store
+R1 = 0
+
+// Store result into RAM at 0x0
+STORE R4 R1 0
+
 ```
 
 Compiled to:
 
 ```bash
-0 0x807F
-1 0x827F
-2 0x0440
-3 0xA803
-4 0xB001
-5 0x8601
-6 0x8202
+0x827F
+0xC445
+0x861E
+0x2D0
+0xA802
+0xB002
+0x8801
+0x2D0
+0xA803
+0xB001
+0x8800
+0x8200
+0xD840
 ```
