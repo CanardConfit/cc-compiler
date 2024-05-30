@@ -66,6 +66,8 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | *Bits*                          | *15 14 13 12* | *11 10 09 08* | *07 06 05 04 03 02 01 00* |
 | **BC**: If(cond), PC = PC + val | 1010          | COND          | val                       |
 
+> COND = Z,N,C,V.
+
 ### Branch instructions (TODO)
 
 | Operation                       | Opcode        | Reg Link      | Reserved | Address to the function   |
