@@ -8,6 +8,31 @@
 
 The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva](https://www.hesge.ch/hepia/), where students are tasked with creating their own processor using [Logisim](https://github.com/logisim-evolution/logisim-evolution). This project aims to provide a Node.js-based compiler that can translate high-level language instructions into machine code compatible with the custom processor designed in Logisim.
 
+## C-Like Syntax
+
+| Syntax                       | Arguments                              | Example          | Description                                                                       |
+|------------------------------|----------------------------------------|------------------|-----------------------------------------------------------------------------------|
+| `R[0-7] = x`                 | x = Any int number (8 bits)            | `R0 = 0`         | Assignation                                                                       |
+| `R[0-7] = R[0-7] + R[0-7]`   |                                        | `R0 = R1 + R2`   | Addition                                                                          |
+| `R[0-7] = R[0-7] - R[0-7]`   |                                        | `R0 = R1 - R2`   | Substraction                                                                      |
+| `R[0-7] = R[0-7] >> R[0-7]`  |                                        | `R0 = R1 >> R2`  | Shift right                                                                       |
+| `R[0-7] = R[0-7] << R[0-7]`  |                                        | `R0 = R1 << R2`  | Shift left                                                                        |
+| `R[0-7] = R[0-7] ASR R[0-7]` |                                        | `R0 = R1 ASR R2` | ASR shift                                                                         |
+| `while x y`                  | x = (`not`)<br/> y = `N,Z,C,V`, `True` | `while True`     | While                                                                             |
+| `if R[0-7] x R[0-7]`         | x = `==, !=, <=, >=, <, >`             | `if R0 == R1`    | If                                                                                |
+| `{`                          |                                        | `                | Brace to start if or while block                                                  |
+| `}`                          |                                        | `                | Brace to end if or while block                                                    |
+| `STORE R[0-7] R[0-7] x`      | x = offset int                         | `STORE R0 R1 0`  | Store from value into R[0-7] to RAM or peripheral (R[0-7] value pointer + offset) |
+| `LOAD R[0-7] R[0-7] x`       | x = offset int                         | `LOAD R1 R2 0`   | Store from RAM or peripheral (R[0-7] value pointer + offset) to R[0-7] variable   |
+| ``                           |                                        |                  |                                                                                   |
+| ``                           |                                        |                  |                                                                                   |
+| ``                           |                                        |                  |                                                                                   |
+| ``                           |                                        |                  |                                                                                   |
+| ``                           |                                        |                  |                                                                                   |
+| ``                           |                                        |                  |                                                                                   |
+| ``                           |                                        |                  |                                                                                   |
+
+
 ## Assembler instructions
 
 ### ALU instructions
