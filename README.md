@@ -97,7 +97,7 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | Bit 5 - LED5      |               |        |         |        |
 | Bit 6 - LED6      |               |        |         |        |
 | Bit 7 - LED7      |               |        |         |        |
-| **Buttons**       | 129           | R      | 129     | 0      |
+| **Buttons**       | 129           | R      | 128     | 1      |
 | Bit 0 - BTN0      |               |        |         |        |
 | Bit 1 - BTN1      |               |        |         |        |
 | Bit 2 - BTN2      |               |        |         |        |
@@ -107,21 +107,21 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | Bit 6 - BTN6      |               |        |         |        |
 | Bit 7 - BTN7      |               |        |         |        |
 | **UART**          |               |        |         |        |
-| Address           | 130           | R      | 130     | 0      |
-| DataH             | 131           | R      | 130     | 1      |
-| DataL             | 132           | R      | 130     | 2      |
+| Address           | 130           | R      | 128     | 2      |
+| DataH             | 131           | R      | 128     | 3      |
+| DataL             | 132           | R      | 128     | 4      |
 | **PWM**           |               |        |         |        |
-| V1                | 133           | W      | 133     | 0      |
-| V2                | 134           | W      | 133     | 1      |
+| V1                | 133           | W      | 128     | 5      |
+| V2                | 134           | W      | 128     | 6      |
 | **Front Sensor**  |               |        |         |        |
-| Left              | 135           | R      | 135     | 0      |
-| Middle            | 136           | R      | 135     | 1      |
-| Right             | 137           | R      | 135     | 2      |
+| Left              | 135           | R      | 128     | 7      |
+| Middle            | 136           | R      | 128     | 8      |
+| Right             | 137           | R      | 128     | 9      |
 | **Ground Sensor** |               |        |         |        |
-| Left              | 138           | R      | 138     | 0      |
-| Right             | 139           | R      | 138     | 1      |
+| Left              | 138           | R      | 128     | 10     |
+| Right             | 139           | R      | 128     | 11     |
 | **Other**         |               |        |         |        |
-| Valve             | 140           | W      | 140     | 0      |
+| Valve             | 140           | W      | 128     | 12     |
 
 
 ## Examples
