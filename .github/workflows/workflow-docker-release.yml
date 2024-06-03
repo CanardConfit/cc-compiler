@@ -98,3 +98,18 @@ jobs:
           tags: ${{ steps.lower-repo.outputs.repository }}:latest, ${{ steps.lower-repo.outputs.repository }}:${{ steps.identify_github_release_tag_name.outputs.tag }}, quay.io/${{ steps.lower-repo.outputs.repository }}:latest, quay.io/${{ steps.lower-repo.outputs.repository }}:${{ steps.identify_github_release_tag_name.outputs.tag }}, ghcr.io/${{ steps.lower-repo.outputs.repository }}:latest, ghcr.io/${{ steps.lower-repo.outputs.repository }}:${{ steps.identify_github_release_tag_name.outputs.tag }}
           build-args: |
             RELEASETAG=${{ steps.identify_github_release_tag_name.outputs.tag }}
+  deploy:
+    runs-on: ubuntu-latest
+    needs: gcr-dockerhub-build-publish
+    steps:
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd ~/docker-composes/cc-compiler
+          docker-compose pull
+          docker-compose up -d
