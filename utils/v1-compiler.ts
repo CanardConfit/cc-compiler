@@ -147,7 +147,7 @@ function compute_asm(tree: Tree): CCLine[] {
         let jump1 = 2;
         let sign = tree.fields[1] as string;
 
-        if (sign.startsWith("<") || sign.startsWith("!")) {
+        if (sign.startsWith("!")) {
             jump1 = jump;
             jump = 1;
         }
@@ -162,7 +162,8 @@ function compute_asm(tree: Tree): CCLine[] {
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
                 break;
             case '<':
-                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 2).toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 3).toString(), 8)}`)], TreeType.IF_COND));
+                jump = 1;
                 break;
             case '=':
                 throw Error("Cannot have = without other = after.");
@@ -236,16 +237,20 @@ function get_num_nodes(tree: Tree|null): number {
 }
 
 function revert_conditions(tree: Tree) {
-    let current = tree;
+    let current: Tree | null = tree;
 
-    while (current.next) {
-        let c = current.next;
-        if (c.type == TreeType.While) {
-            current.sub = c.sub;
-            c.sub = null;
-            c.fields.push(get_num_nodes(current.sub) + c.weight - 1);
-        } else if (c.type == TreeType.IF) {
-            c.fields.push(get_num_nodes(c.sub) + c.weight - 1);
+    while (current != null) {
+        if (current.next) {
+            let c = current.next;
+            if (c.type == TreeType.While) {
+                current.sub = c.sub;
+                c.sub = null;
+                c.fields.push(get_num_nodes(current.sub) + c.weight - 1);
+            }
+        }
+        if (current.type == TreeType.IF) {
+            let val = get_num_nodes(current.sub) + current.weight - 1;
+            current.fields.push(val);
         }
 
         if (current.sub) {

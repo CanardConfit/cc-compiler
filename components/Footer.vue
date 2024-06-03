@@ -11,7 +11,10 @@ const commitHash = ref("");
 
 onMounted(async () => {
   const response = await fetch("commit-hash.txt");
-  commitHash.value = await response.text();
+  if (response.status === 200)
+    commitHash.value = await response.text();
+  else
+    commitHash.value = "development";
 });
 </script>
 
