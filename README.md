@@ -116,12 +116,29 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | Bit 5 - Reserved    |               |        |         |        |
 | Bit 6 - Reserved    |               |        |         |        |
 | Bit 7 - Reserved    |               |        |         |        |
-| Data                | 131           | R      | 128     | 3      |
+| DataL               | 131           | R      | 128     | 3      |
+| Bit 0               |               |        |         |        |
+| Bit 1               |               |        |         |        |
+| Bit 2               |               |        |         |        |
+| Bit 3               |               |        |         |        |
+| Bit 4               |               |        |         |        |
+| Bit 5               |               |        |         |        |
+| Bit 6               |               |        |         |        |
+| Bit 7               |               |        |         |        |
+| DataH               | 132           | R      | 128     | 4      |
+| Bit 8               |               |        |         |        |
+| Bit 9               |               |        |         |        |
+| Bit 10              |               |        |         |        |
+| Bit 11              |               |        |         |        |
+| Bit 12              |               |        |         |        |
+| Bit 13              |               |        |         |        |
+| Bit 14              |               |        |         |        |
+| Bit 15              |               |        |         |        |
 | **PWM**             |               |        |         |        |
-| V1                  | 132           | W      | 128     | 4      |
-| V2                  | 133           | W      | 128     | 5      |
+| V1                  | 133           | W      | 128     | 5      |
+| V2                  | 134           | W      | 128     | 6      |
 | **Other**           |               |        |         |        |
-| Valve               | 134           | W      | 128     | 6      |
+| Valve               | 135           | W      | 128     | 7      |
 | Bit 0 - Valve bit 0 |               |        |         |        |
 | Bit 1 - Reserved    |               |        |         |        |
 | Bit 2 - Reserved    |               |        |         |        |
