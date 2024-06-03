@@ -81,6 +81,28 @@ R1 = 0
 
 // Store result into RAM at 0x0
 STORE R4 R1 0
+`}, {id: 4, name: "V1 - UART registry into leds", program: `
+// -----
+// Get Value from UART
+// -----
+
+// Pointer to Perihperal part
+R1 = 128
+
+// Address of the wanted UART registry
+R2 = 2
+
+// Store address wanted into UART address peripheral
+STORE R2 R1 2
+
+while true
+{
+    // Load data incoming from UART registry selected
+    LOAD R0 R1 3
+
+    // Display value from UART to Leds
+    STORE R0 R1 0
+}
 `}];
 
 export enum TreeType {

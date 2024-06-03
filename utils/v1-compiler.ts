@@ -17,7 +17,7 @@ function print_tree(tree: Tree, depth=0) {
 }
 
 const PATTERNS: {regex: RegExp, type: TreeType}[] = [
-    {regex: /R([0-7])\s=\s*(\d+)/, type: TreeType.Assignation},
+    {regex: /R([0-7])\s=\s*(-?\d+)/, type: TreeType.Assignation},
     {regex: /while\s+(not)?\s*([NZCV]|true)/, type: TreeType.While},
     {regex: /if\s*R([0-7])\s*([!=><]=?)\s+R([0-7])/, type: TreeType.IF},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.ADD},
@@ -28,8 +28,8 @@ const PATTERNS: {regex: RegExp, type: TreeType}[] = [
     {regex: /R([0-7])\s*=\s*R([0-7])\s*and\s*R([0-7])/, type: TreeType.AND},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*or\s*R([0-7])/, type: TreeType.OR},
     {regex: /R([0-7])\s*=\s*not\s*R([0-7])/, type: TreeType.NOT},
-    {regex: /STORE\s*R([0-7])\s*R([0-7])\s*(\d*)/, type: TreeType.STORE},
-    {regex: /LOAD\s*R([0-7])\s*R([0-7])\s*(\d*)/, type: TreeType.LOAD},
+    {regex: /STORE\s*R([0-7])\s*R([0-7])\s*(-?\d*)/, type: TreeType.STORE},
+    {regex: /LOAD\s*R([0-7])\s*R([0-7])\s*(-?\d*)/, type: TreeType.LOAD},
     {regex: /^{/, type: TreeType.START_BRACE},
     {regex: /^}/, type: TreeType.END_BRACE},
 ];
@@ -68,18 +68,17 @@ function clean_tree(tree: Tree) {
 }
 
 function string_to_binary(input_string: string, length=3) {
-    try {
-        const number = Number(input_string);
-        let binary_representation;
-        if (number < 0) {
-            binary_representation = ((1 << length) + number).toString(2);
-        } else {
-            binary_representation = number.toString(2);
-        }
-        return binary_representation.padStart(length, '0');
-    } catch (e: unknown) {
-        throw Error("Error");
+    const number = Number(input_string);
+    let binary_representation;
+    if (number < 0) {
+        binary_representation = ((1 << length) + number).toString(2);
+    } else {
+        binary_representation = number.toString(2);
     }
+    if (binary_representation.length > length) {
+        throw Error(`This number, '${number}', cannot be upper than ${Math.pow(2, length) - 1}.`);
+    }
+    return binary_representation.padStart(length, '0');
 }
 
 function asm_2fields(code: string, tree: Tree): CCLine {

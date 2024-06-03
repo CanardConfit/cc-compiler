@@ -11,7 +11,7 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 ## C-Like Syntax
 
 | Syntax                       | Arguments                              | Example          | Description                                                                       |
-|------------------------------|----------------------------------------|------------------|-----------------------------------------------------------------------------------|
+| ---------------------------- | -------------------------------------- | ---------------- | --------------------------------------------------------------------------------- |
 | `R[0-7] = x`                 | x = Any int number (8 bits)            | `R0 = 0`         | Assignation                                                                       |
 | `R[0-7] = R[0-7] + R[0-7]`   |                                        | `R0 = R1 + R2`   | Addition                                                                          |
 | `R[0-7] = R[0-7] - R[0-7]`   |                                        | `R0 = R1 - R2`   | Substraction                                                                      |
@@ -84,44 +84,73 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | LD RD, offset[RP] | 1100          | RD         | RP         | offset              |
 | ST RS, offset[RP] | 1101          | RS         | RP         | offset              |
 
-### Peripheral access table (TODO)
+### Peripheral access table
 
-| Description       | Pointer value | Access | Pointer | offset |
-| ----------------- | ------------- | ------ | ------- | ------ |
-| **Leds**          | 128           | R / W  | 128     | 0      |
-| Bit 0 - LED0      |               |        |         |        |
-| Bit 1 - LED1      |               |        |         |        |
-| Bit 2 - LED2      |               |        |         |        |
-| Bit 3 - LED3      |               |        |         |        |
-| Bit 4 - LED4      |               |        |         |        |
-| Bit 5 - LED5      |               |        |         |        |
-| Bit 6 - LED6      |               |        |         |        |
-| Bit 7 - LED7      |               |        |         |        |
-| **Buttons**       | 129           | R      | 128     | 1      |
-| Bit 0 - BTN0      |               |        |         |        |
-| Bit 1 - BTN1      |               |        |         |        |
-| Bit 2 - BTN2      |               |        |         |        |
-| Bit 3 - BTN3      |               |        |         |        |
-| Bit 4 - BTN4      |               |        |         |        |
-| Bit 5 - BTN5      |               |        |         |        |
-| Bit 6 - BTN6      |               |        |         |        |
-| Bit 7 - BTN7      |               |        |         |        |
-| **UART**          |               |        |         |        |
-| Address           | 130           | R      | 128     | 2      |
-| DataH             | 131           | R      | 128     | 3      |
-| DataL             | 132           | R      | 128     | 4      |
-| **PWM**           |               |        |         |        |
-| V1                | 133           | W      | 128     | 5      |
-| V2                | 134           | W      | 128     | 6      |
-| **Front Sensor**  |               |        |         |        |
-| Left              | 135           | R      | 128     | 7      |
-| Middle            | 136           | R      | 128     | 8      |
-| Right             | 137           | R      | 128     | 9      |
-| **Ground Sensor** |               |        |         |        |
-| Left              | 138           | R      | 128     | 10     |
-| Right             | 139           | R      | 128     | 11     |
-| **Other**         |               |        |         |        |
-| Valve             | 140           | W      | 128     | 12     |
+| Description         | Pointer value | Access | Pointer | offset |
+| ------------------- | ------------- | ------ | ------- | ------ |
+| **Leds**            | 128           | R / W  | 128     | 0      |
+| Bit 0 - LED0        |               |        |         |        |
+| Bit 1 - LED1        |               |        |         |        |
+| Bit 2 - LED2        |               |        |         |        |
+| Bit 3 - LED3        |               |        |         |        |
+| Bit 4 - LED4        |               |        |         |        |
+| Bit 5 - LED5        |               |        |         |        |
+| Bit 6 - LED6        |               |        |         |        |
+| Bit 7 - LED7        |               |        |         |        |
+| **Buttons**         | 129           | R      | 128     | 1      |
+| Bit 0 - BTN0        |               |        |         |        |
+| Bit 1 - BTN1        |               |        |         |        |
+| Bit 2 - BTN2        |               |        |         |        |
+| Bit 3 - BTN3        |               |        |         |        |
+| Bit 4 - BTN4        |               |        |         |        |
+| Bit 5 - BTN5        |               |        |         |        |
+| Bit 6 - BTN6        |               |        |         |        |
+| Bit 7 - BTN7        |               |        |         |        |
+| **UART**            |               |        |         |        |
+| Registry Address    | 130           | R / W  | 128     | 2      |
+| Bit 0 - Addr bit 0  |               |        |         |        |
+| Bit 1 - Addr bit 1  |               |        |         |        |
+| Bit 2 - Addr bit 2  |               |        |         |        |
+| Bit 3 - Addr bit 3  |               |        |         |        |
+| Bit 4 - Reserved    |               |        |         |        |
+| Bit 5 - Reserved    |               |        |         |        |
+| Bit 6 - Reserved    |               |        |         |        |
+| Bit 7 - Reserved    |               |        |         |        |
+| Data                | 131           | R      | 128     | 3      |
+| **PWM**             |               |        |         |        |
+| V1                  | 132           | W      | 128     | 4      |
+| V2                  | 133           | W      | 128     | 5      |
+| **Other**           |               |        |         |        |
+| Valve               | 134           | W      | 128     | 6      |
+| Bit 0 - Valve bit 0 |               |        |         |        |
+| Bit 1 - Reserved    |               |        |         |        |
+| Bit 2 - Reserved    |               |        |         |        |
+| Bit 3 - Reserved    |               |        |         |        |
+| Bit 4 - Reserved    |               |        |         |        |
+| Bit 5 - Reserved    |               |        |         |        |
+| Bit 6 - Reserved    |               |        |         |        |
+| Bit 7 - Reserved    |               |        |         |        |
+
+### UART Registries Table
+
+| Address | Value | Name         | Description                                                   |
+| ------- | ----- | ------------ | ------------------------------------------------------------- |
+| `0000`  | `0x0` | Version      | Firmware version of the RobotMyLab                            |
+| `0001`  | `0x1` | Right Dist   | Distance measured by the front right sensor                   |
+| `0010`  | `0x2` | Front Dist   | Distance measured by the front sensor                         |
+| `0011`  | `0x3` | Left Dist    | Distance measured by the front left sensor                    |
+| `0100`  | `0x4` | Accel X      | X-axis of the accelerometer (front-back axis)                 |
+| `0101`  | `0x5` | Accel Y      | Y-axis of the accelerometer (left-right axis)                 |
+| `0110`  | `0x6` | Accel Z      | Z-axis of the accelerometer (up-down axis)                    |
+| `0111`  | `0x7` | Gyro X       | Angular velocity around the X-axis                            |
+| `1000`  | `0x8` | Gyro Y       | Angular velocity around the Y-axis                            |
+| `1001`  | `0x9` | Gyro Z       | Angular velocity around the Z-axis                            |
+| `1010`  | `0xA` | Battery      | Charge state of the rechargeable batteries                    |
+| `1011`  | `0xB` | Left IR      | Value measured by the left ground IR sensor                   |
+| `1100`  | `0xC` | Right IR     | Value measured by the right ground IR sensor                  |
+| `1101`  | `0xD` | Left Odom    | Cumulative distance measured by the left odometric sensor     |
+| `1110`  | `0xE` | Right Odom   | Cumulative distance measured by the right odometric sensor    |
+| `1111`  | `0xF` | IR RX        | Value measured by the IR communication receiver               |
 
 
 ## Examples
@@ -203,4 +232,41 @@ Compiled to:
 0x8800
 0x8200
 0xD840
+```
+
+Another example:
+
+```c
+// -----
+// Get Value from UART
+// -----
+
+// Pointer to Perihperal part
+R1 = 128
+
+// Address of the wanted UART registry
+R2 = 2
+
+// Store address wanted into UART address peripheral
+STORE R2 R1 2
+
+while true
+{
+    // Load data incoming from UART registry selected
+    LOAD R0 R1 3
+
+    // Display value from UART to Leds
+    STORE R0 R1 0
+}
+```
+
+Compiled to:
+
+```bash
+0x8280
+0x8402
+0xD442
+0xC043
+0xD040
+0xB0FE
 ```
