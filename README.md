@@ -11,12 +11,12 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 ## C-Like Syntax
 
 | Syntax                       | Arguments                              | Example          | Description                                                                       |
-| ---------------------------- | -------------------------------------- | ---------------- | --------------------------------------------------------------------------------- |
+|------------------------------|----------------------------------------|------------------|-----------------------------------------------------------------------------------|
 | `R[0-7] = x`                 | x = Any int number (8 bits)            | `R0 = 0`         | Assignation                                                                       |
 | `R[0-7] = R[0-7] + R[0-7]`   |                                        | `R0 = R1 + R2`   | Addition                                                                          |
 | `R[0-7] = R[0-7] - R[0-7]`   |                                        | `R0 = R1 - R2`   | Substraction                                                                      |
-| `R[0-7] = R[0-7] >> R[0-7]`  |                                        | `R0 = R1 >> R2`  | Shift right                                                                       |
-| `R[0-7] = R[0-7] << R[0-7]`  |                                        | `R0 = R1 << R2`  | Shift left                                                                        |
+| `R[0-7] = R[0-7] >> 1`       |                                        | `R0 = R1 >> 1`   | Shift right by 1                                                                  |
+| `R[0-7] = R[0-7] << 1`       |                                        | `R0 = R1 << 1`   | Shift left by 1                                                                   |
 | `R[0-7] = R[0-7] ASR R[0-7]` |                                        | `R0 = R1 ASR R2` | ASR shift                                                                         |
 | `R[0-7] = R[0-7] and R[0-7]` |                                        | `R0 = R1 and R2` | And operation                                                                     |
 | `R[0-7] = R[0-7] or R[0-7]`  |                                        | `R0 = R1 or R2`  | Or operation                                                                      |
