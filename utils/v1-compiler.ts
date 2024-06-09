@@ -82,7 +82,7 @@ function string_to_binary(input_string: string, length=3) {
 }
 
 function asm_2fields(code: string, tree: Tree): CCLine {
-    return l(tree, [cc("opcode", `${code}`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("source 0", `${string_to_binary(tree.fields[1] as string)}`), cc("x", `00000`)]);
+    return l(tree, [cc("opcode", `${code}`), cc("result", `${string_to_binary(tree.fields[0] as string)}`), cc("source 0", `${string_to_binary(tree.fields[1] as string)}`), cc("x", `000000`)]);
 }
 
 function asm_3fields(code: string, tree: Tree): CCLine {
