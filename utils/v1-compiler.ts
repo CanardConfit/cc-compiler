@@ -180,7 +180,7 @@ function compute_asm(tree: Tree): CCLine[] {
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
                 break;
             case '<=':
-                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 3).toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 2).toString(), 8)}`)], TreeType.IF_COND));
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
                 jump = jump1
                 break;
