@@ -1,4 +1,5 @@
 import {Tree, CCLine, CCLineAsm, TreeType} from "~/utils/objects";
+import {weight} from "postcss-minify-font-values/types/lib/keywords";
 
 function print_tree(tree: Tree, depth=0) {
     if (!tree) {
@@ -43,7 +44,20 @@ function get_tree_of_line(line: string) {
             if (type_ == TreeType.While && match[0] == "not") {
                 return new Tree(line, type_, match, 2);
             } else if (type_ == TreeType.IF) {
-                return new Tree(line, type_, match, 2);
+                let wht = 0;
+                switch (match[1]) {
+                    case '>':
+                    case '<':
+                    case '==':
+                    case '!=':
+                        wht = 3;
+                        break;
+                    case '>=':
+                    case '<=':
+                        wht = 4;
+                        break;
+                }
+                return new Tree(line, type_, match, wht);
             } else {
                 return new Tree(line, type_, match);
             }
@@ -147,11 +161,6 @@ function compute_asm(tree: Tree): CCLine[] {
         let jump1 = 2;
         let sign = tree.fields[1] as string;
 
-        if (sign.startsWith("!")) {
-            jump1 = jump;
-            jump = 1;
-        }
-
         let Rs1 = string_to_binary(tree.fields[0] as string, 3);
         let Rs2 = string_to_binary(tree.fields[2] as string, 3);
 
@@ -159,10 +168,11 @@ function compute_asm(tree: Tree): CCLine[] {
 
         switch (sign) {
             case '>':
-                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump).toString(), 8)}`)], TreeType.IF_COND));
+                jump = 1;
                 break;
             case '<':
-                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 3).toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump).toString(), 8)}`)], TreeType.IF_COND));
                 jump = 1;
                 break;
             case '=':
@@ -173,16 +183,18 @@ function compute_asm(tree: Tree): CCLine[] {
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
                 break;
             case '!=':
-                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary((jump + 2).toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary((jump).toString(), 8)}`)], TreeType.IF_COND));
+                jump = 1;
                 break;
             case '>=':
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary("3", 8)}`)], TreeType.IF_COND));
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
+                jump -= 2;
                 break;
             case '<=':
-                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump + 2).toString(), 8)}`)], TreeType.IF_COND));
+                ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `0100`), cc("jumps", `${string_to_binary((jump).toString(), 8)}`)], TreeType.IF_COND));
                 ret.push(l(tree, [cc("opcode", `1010`), cc("condition", `1000`), cc("jumps", `${string_to_binary(jump1.toString(), 8)}`)], TreeType.IF_COND));
-                jump = jump1
+                jump = 1
                 break;
         }
 

@@ -28,11 +28,11 @@
               </thead>
               <tbody>
               <tr>
-                <td class="text-center"><span class="badge badge-dark">{{ index.toString(2).padStart(7, "0") }}</span></td>
+                <td class="text-center"><span class="badge badge-dark">{{ index }}</span></td>
                 <td class="text-center"><pre>0x{{ item.asm.toString(16).toUpperCase() }}</pre></td>
                 <td class="text-center"><code>{{ item.line }}</code></td>
                 <td>{{ getInstructionInfo(item.type)?.info }}</td>
-                <td class="text-center" v-for="t in item.fields">{{ t.value }}</td>
+                <td class="text-center" v-for="t in item.fields">{{ t.value }} ({{ parseInt(t.value.length >= 8 && t.value[0] === "1" ? t.value.padStart(32, "1") : t.value.padStart(32, "0"), 2) >> 0 }})</td>
               </tr>
               </tbody>
             </table>

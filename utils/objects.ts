@@ -9,7 +9,7 @@ export function getCompilerInfo(version: CompilerVersion) {
 
 export const compilerInfo = [
     {id: CompilerVersion.V05, info: "This compiler only supports 8 variables from the register bank (R0, R1, ...). The ifs and whiles only accept the value of the ALU flags (N, Z, C, V). The interruption routine isn't supported."},
-    {id: CompilerVersion.V1, info: "This compiler only supports 8 variables from the register bank (R0, R1, ...). The ifs support operations >, <, ==, !=, >=, <= between two registers. While only accept values from (N, Z, C, V) and true. Comments with // is supported. The interruption routine isn't supported."}
+    {id: CompilerVersion.V1, info: "This compiler only supports 8 variables from the register bank (R0, R1, ...). The ifs support operations >, <, ==, !=, >=, <= between two registers. While only accept values from (N, Z, C, V) and true. Comments with // is supported. The interruption routine isn't supported. /!\\ Check the values of the jumps as there may be bugs that count the jumps wrong."}
 ]
 
 export interface CCOptions {
