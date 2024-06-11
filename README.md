@@ -86,67 +86,86 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 
 ### Peripheral access table
 
-| Description         | Pointer value | Access | Pointer | offset |
-| ------------------- | ------------- | ------ | ------- | ------ |
-| **Leds**            | 128           | R / W  | 128     | 0      |
-| Bit 0 - LED0        |               |        |         |        |
-| Bit 1 - LED1        |               |        |         |        |
-| Bit 2 - LED2        |               |        |         |        |
-| Bit 3 - LED3        |               |        |         |        |
-| Bit 4 - LED4        |               |        |         |        |
-| Bit 5 - LED5        |               |        |         |        |
-| Bit 6 - LED6        |               |        |         |        |
-| Bit 7 - LED7        |               |        |         |        |
-| **Buttons**         | 129           | R      | 128     | 1      |
-| Bit 0 - BTN0        |               |        |         |        |
-| Bit 1 - BTN1        |               |        |         |        |
-| Bit 2 - BTN2        |               |        |         |        |
-| Bit 3 - BTN3        |               |        |         |        |
-| Bit 4 - BTN4        |               |        |         |        |
-| Bit 5 - BTN5        |               |        |         |        |
-| Bit 6 - BTN6        |               |        |         |        |
-| Bit 7 - BTN7        |               |        |         |        |
-| **UART**            |               |        |         |        |
-| Registry Address    | 130           | R / W  | 128     | 2      |
-| Bit 0 - Addr bit 0  |               |        |         |        |
-| Bit 1 - Addr bit 1  |               |        |         |        |
-| Bit 2 - Addr bit 2  |               |        |         |        |
-| Bit 3 - Addr bit 3  |               |        |         |        |
-| Bit 4 - Reserved    |               |        |         |        |
-| Bit 5 - Reserved    |               |        |         |        |
-| Bit 6 - Reserved    |               |        |         |        |
-| Bit 7 - Reserved    |               |        |         |        |
-| DataL               | 131           | R      | 128     | 3      |
-| Bit 0               |               |        |         |        |
-| Bit 1               |               |        |         |        |
-| Bit 2               |               |        |         |        |
-| Bit 3               |               |        |         |        |
-| Bit 4               |               |        |         |        |
-| Bit 5               |               |        |         |        |
-| Bit 6               |               |        |         |        |
-| Bit 7               |               |        |         |        |
-| DataH               | 132           | R      | 128     | 4      |
-| Bit 8               |               |        |         |        |
-| Bit 9               |               |        |         |        |
-| Bit 10              |               |        |         |        |
-| Bit 11              |               |        |         |        |
-| Bit 12              |               |        |         |        |
-| Bit 13              |               |        |         |        |
-| Bit 14              |               |        |         |        |
-| Bit 15              |               |        |         |        |
-| **PWM**             |               |        |         |        |
-| V1                  | 133           | W      | 128     | 5      |
-| V2                  | 134           | W      | 128     | 6      |
-| **Other**           |               |        |         |        |
-| Valve               | 135           | W      | 128     | 7      |
-| Bit 0 - Valve bit 0 |               |        |         |        |
-| Bit 1 - Reserved    |               |        |         |        |
-| Bit 2 - Reserved    |               |        |         |        |
-| Bit 3 - Reserved    |               |        |         |        |
-| Bit 4 - Reserved    |               |        |         |        |
-| Bit 5 - Reserved    |               |        |         |        |
-| Bit 6 - Reserved    |               |        |         |        |
-| Bit 7 - Reserved    |               |        |         |        |
+| Description           | Pointer value | Access | Pointer | offset |
+| --------------------- | ------------- | ------ | ------- | ------ |
+| **Leds**              | 128           | R / W  | 128     | 0      |
+| Bit 0 - LED0          |               |        |         |        |
+| Bit 1 - LED1          |               |        |         |        |
+| Bit 2 - LED2          |               |        |         |        |
+| Bit 3 - LED3          |               |        |         |        |
+| Bit 4 - LED4          |               |        |         |        |
+| Bit 5 - LED5          |               |        |         |        |
+| Bit 6 - LED6          |               |        |         |        |
+| Bit 7 - LED7          |               |        |         |        |
+| **Buttons**           | 129           | R      | 128     | 1      |
+| Bit 0 - BTN0          |               |        |         |        |
+| Bit 1 - BTN1          |               |        |         |        |
+| Bit 2 - BTN2          |               |        |         |        |
+| Bit 3 - BTN3          |               |        |         |        |
+| Bit 4 - BTN4          |               |        |         |        |
+| Bit 5 - BTN5          |               |        |         |        |
+| Bit 6 - BTN6          |               |        |         |        |
+| Bit 7 - BTN7          |               |        |         |        |
+| **UART**              |               |        |         |        |
+| Registry Address      | 130           | R / W  | 128     | 2      |
+| *Bit 0 - Addr bit 0*  |               |        |         |        |
+| *Bit 1 - Addr bit 1*  |               |        |         |        |
+| *Bit 2 - Addr bit 2*  |               |        |         |        |
+| *Bit 3 - Addr bit 3*  |               |        |         |        |
+| *Bit 4 - Reserved*    |               |        |         |        |
+| *Bit 5 - Reserved*    |               |        |         |        |
+| *Bit 6 - Reserved*    |               |        |         |        |
+| *Bit 7 - Reserved*    |               |        |         |        |
+| DataL                 | 131           | R      | 128     | 3      |
+| *Bit 0*               |               |        |         |        |
+| *Bit 1*               |               |        |         |        |
+| *Bit 2*               |               |        |         |        |
+| *Bit 3*               |               |        |         |        |
+| *Bit 4*               |               |        |         |        |
+| *Bit 5*               |               |        |         |        |
+| *Bit 6*               |               |        |         |        |
+| *Bit 7*               |               |        |         |        |
+| DataH                 | 132           | R      | 128     | 4      |
+| *Bit 8*               |               |        |         |        |
+| *Bit 9*               |               |        |         |        |
+| *Bit 10*              |               |        |         |        |
+| *Bit 11*              |               |        |         |        |
+| *Bit 12*              |               |        |         |        |
+| *Bit 13*              |               |        |         |        |
+| *Bit 14*              |               |        |         |        |
+| *Bit 15*              |               |        |         |        |
+| **PWM**               |               |        |         |        |
+| V1                    | 133           | W      | 128     | 5      |
+| V2                    | 134           | W      | 128     | 6      |
+| **Other**             |               |        |         |        |
+| Valve                 | 135           | R / W  | 128     | 7      |
+| *Bit 0 - Valve bit 0* |               |        |         |        |
+| *Bit 1 - Reserved*    |               |        |         |        |
+| *Bit 2 - Reserved*    |               |        |         |        |
+| *Bit 3 - Reserved*    |               |        |         |        |
+| *Bit 4 - Reserved*    |               |        |         |        |
+| *Bit 5 - Reserved*    |               |        |         |        |
+| *Bit 6 - Reserved*    |               |        |         |        |
+| *Bit 7 - Reserved*    |               |        |         |        |
+| **SPI1**              |               |        |         |        |
+| DataL                 | 136           | R      | 128     | 8      |
+| *Bit 0*               |               |        |         |        |
+| *Bit 1*               |               |        |         |        |
+| *Bit 2*               |               |        |         |        |
+| *Bit 3*               |               |        |         |        |
+| *Bit 4*               |               |        |         |        |
+| *Bit 5*               |               |        |         |        |
+| *Bit 6*               |               |        |         |        |
+| *Bit 7*               |               |        |         |        |
+| DataH                 | 137           | R      | 128     | 9      |
+| *Bit 8*               |               |        |         |        |
+| *Bit 9*               |               |        |         |        |
+| *Bit 10*              |               |        |         |        |
+| *Bit 11*              |               |        |         |        |
+| *Bit 12*              |               |        |         |        |
+| *Bit 13*              |               |        |         |        |
+| *Bit 14*              |               |        |         |        |
+| *Bit 15*              |               |        |         |        |
 
 ### UART Registries Table
 
