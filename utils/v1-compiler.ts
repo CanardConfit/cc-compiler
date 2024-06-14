@@ -1,5 +1,4 @@
 import {Tree, CCLine, CCLineAsm, TreeType} from "~/utils/objects";
-import {weight} from "postcss-minify-font-values/types/lib/keywords";
 
 function print_tree(tree: Tree, depth=0) {
     if (!tree) {
@@ -18,7 +17,7 @@ function print_tree(tree: Tree, depth=0) {
 }
 
 const PATTERNS: {regex: RegExp, type: TreeType}[] = [
-    {regex: /R([0-7])\s=\s*(-?\d+)/, type: TreeType.Assignation},
+    {regex: /R([0-7])\s*=\s*(-?\d+)/, type: TreeType.Assignation},
     {regex: /while\s+(not)?\s*([NZCV]|true)/, type: TreeType.While},
     {regex: /if\s*R([0-7])\s*([!=><]=?)\s+R([0-7])/, type: TreeType.IF},
     {regex: /R([0-7])\s*=\s*R([0-7])\s*\+\s*R([0-7])/, type: TreeType.ADD},
@@ -31,6 +30,7 @@ const PATTERNS: {regex: RegExp, type: TreeType}[] = [
     {regex: /R([0-7])\s*=\s*not\s*R([0-7])/, type: TreeType.NOT},
     {regex: /STORE\s*R([0-7])\s*R([0-7])\s*(-?\d*)/, type: TreeType.STORE},
     {regex: /LOAD\s*R([0-7])\s*R([0-7])\s*(-?\d*)/, type: TreeType.LOAD},
+    {regex: /JMP\s*(-?\d*)/, type: TreeType.JUMP},
     {regex: /^{/, type: TreeType.START_BRACE},
     {regex: /^}/, type: TreeType.END_BRACE},
 ];
@@ -205,6 +205,8 @@ function compute_asm(tree: Tree): CCLine[] {
         return [l(tree, [cc("opcode", `1101`), cc("Rs", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
     } else if (tree.type == TreeType.LOAD) {
         return [l(tree, [cc("opcode", `1100`), cc("Rd", `${string_to_binary(tree.fields[0] as string)}`), cc("Rp", `${string_to_binary(tree.fields[1] as string)}`), cc("offset", `${string_to_binary(tree.fields[2] as string, 6)}`)])];
+    } else if (tree.type == TreeType.JUMP) {
+        return [l(tree, [cc("opcode", `1011`), cc("x", `0000`), cc("val", `${string_to_binary(tree.fields[0] as string, 8)}`)])];
     } else if (tree.type == TreeType.ADD) {
         return [asm_3fields("0000", tree)];
     } else if (tree.type == TreeType.SUB) {

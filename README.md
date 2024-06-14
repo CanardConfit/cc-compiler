@@ -27,6 +27,7 @@ The cc-compiler project is developed as part of an exercise at [HEPIA in Geneva]
 | `}`                          |                                        | `                | Brace to end if or while block                                                    |
 | `STORE R[0-7] R[0-7] x`      | x = offset int                         | `STORE R0 R1 0`  | Store from value into R[0-7] to RAM or peripheral (R[0-7] value pointer + offset) |
 | `LOAD R[0-7] R[0-7] x`       | x = offset int                         | `LOAD R1 R2 0`   | Store from RAM or peripheral (R[0-7] value pointer + offset) to R[0-7] variable   |
+| `JMP x`                      | x = Any int number (signed)            | `JMP 2`          | Jump unconditional relative.                                                      |
 
 
 ## Assembler instructions

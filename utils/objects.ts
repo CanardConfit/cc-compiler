@@ -106,7 +106,7 @@ while true
 `}];
 
 export enum TreeType {
-    Entry, Assignation, While, IF, IF_SUB, IF_COND, IF_ELSE, ADD, SUB, DecG, DecD, DecA, AND, OR, NOT, START_BRACE, END_BRACE, STORE, LOAD
+    Entry, Assignation, While, IF, IF_SUB, IF_COND, IF_ELSE, ADD, SUB, DecG, DecD, DecA, AND, OR, NOT, START_BRACE, END_BRACE, STORE, LOAD, JUMP
 }
 
 export class Tree {
@@ -173,6 +173,7 @@ export const instructionInfo = [
     {id: TreeType.IF_COND, info: "If Operation. Conditional jump that checks whether one of the if conditions is satisfied. Can be inverted (so the “else” receives the “true” cases)."},
     {id: TreeType.LOAD, info: "Load Operation. Can load data from a pointer + offset pointed to a peripheral or RAM to a registry variable."},
     {id: TreeType.STORE, info: "Store Operation. Can store data from a registry variable to a pointer + offset pointed to a peripheral or RAM."},
+    {id: TreeType.JUMP, info: "Jump unconditional relative."}
 ];
 
 export function getInstructionInfo(type: TreeType) {
