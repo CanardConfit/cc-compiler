@@ -54,7 +54,7 @@ function get_tree_of_line(line: string) {
                         break;
                     case '>=':
                     case '<=':
-                        wht = 4;
+                        wht = 5;
                         break;
                 }
                 return new Tree(line, type_, match, wht);
